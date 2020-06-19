@@ -1,0 +1,779 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     32498,        771]
+NotebookOptionsPosition[     18183,        479]
+NotebookOutlinePosition[     31939,        760]
+CellTagsIndexPosition[     31896,        757]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Numerical Solve for Mercury Perihelion Precession in General Relativity\
+\>", "Title",
+ CellChangeTimes->{{3.777899741281879*^9, 3.777899749745947*^9}, {
+  3.7778999003246307`*^9, 3.777899901089353*^9}, {3.7779003740222607`*^9, 
+  3.777900381196652*^9}, {3.777903227795374*^9, 3.777903238270043*^9}, {
+  3.777904425441431*^9, 3.77790444816897*^9}, {3.777934798740299*^9, 
+  3.7779348106857157`*^9}, {3.801544500283142*^9, 
+  3.8015445421169577`*^9}},ExpressionUUID->"7d94a150-ac58-4052-b5d1-\
+2db496d22871"],
+
+Cell[CellGroupData[{
+
+Cell["", "Section",
+ CellChangeTimes->{{3.77790025214464*^9, 3.777900274160577*^9}, {
+   3.777900402783329*^9, 3.777900403255314*^9}, {3.77790225214336*^9, 
+   3.777902252553363*^9}, {3.777902299505148*^9, 3.777902307787797*^9}, {
+   3.777902446238246*^9, 3.777902447571658*^9}, {3.778011695817046*^9, 
+   3.778011700954771*^9}, 
+   3.801544685767426*^9},ExpressionUUID->"b3ff6c80-c0e3-4248-9978-\
+08da3a200ba5"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Precision", " ", "for", " ", "the", " ", "test"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"PREC", " ", "=", " ", "60"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Off", "[", 
+     RowBox[{
+      RowBox[{"NDSolveValue", "::", "precw"}], ",", 
+      RowBox[{"FindArgMax", "::", "precw"}], ",", 
+      RowBox[{"FindArgMax", "::", "sszero"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SetOptions", "[", 
+     RowBox[{"FindArgMin", ",", 
+      RowBox[{"WorkingPrecision", "\[Rule]", "PREC"}], ",", 
+      RowBox[{"PrecisionGoal", "\[Rule]", "PREC"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SetOptions", "[", 
+     RowBox[{"FindArgMax", ",", 
+      RowBox[{"WorkingPrecision", "\[Rule]", "PREC"}], ",", 
+      RowBox[{"PrecisionGoal", "\[Rule]", "PREC"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SetOptions", "[", 
+     RowBox[{"NDSolveValue", ",", 
+      RowBox[{"WorkingPrecision", "\[Rule]", 
+       RowBox[{"PREC", "-", "1"}]}], ",", 
+      RowBox[{"PrecisionGoal", "\[Rule]", 
+       RowBox[{"PREC", "-", "1"}]}]}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "**", "**", "**", "**", "**", "**", "**", "**", " ", "Physical"}], " ", 
+     "Constants"}], "  ", "*****************)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Gravitational", " ", "constant", " ", "in", " ", 
+     SuperscriptBox["au", "3"], " ", 
+     SuperscriptBox[
+      SubscriptBox["M", "\[Sun]"], 
+      RowBox[{"-", "1"}]], " ", 
+     SuperscriptBox["yr", 
+      RowBox[{"-", "2"}]]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"G", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{"39.42210267428647826610", ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Speed", " ", "of", " ", "light", " ", "in", " ", 
+     RowBox[{"au", "/", 
+      SuperscriptBox["yr", 
+       RowBox[{"-", "1"}]]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"c", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{"63197.790926097720186", ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", " ", "Sun"}], 
+     " ", "Data"}], "  ", "*****************)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"mass", " ", "-", " ", 
+     RowBox[{"in", " ", "solar", " ", "mass"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"M", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{"1.", ",", "PREC"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"SChwarzschild", " ", "radius"}], " ", "-", " ", 
+     RowBox[{"in", " ", "astronomical", " ", "unities"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"rs", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"2.", "M", " ", 
+        RowBox[{"G", "/", 
+         RowBox[{"c", "^", "2."}]}]}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", " ", "Planet"}], 
+     " ", "Data"}], " ", "*****************)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"Major", " ", "semi"}], "-", "axis", " ", "-", " ", 
+     RowBox[{"in", " ", "astronomical", " ", "unities"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"a", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", "  ", 
+      RowBox[{"0.387", ",", "PREC"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", "Eccentricity", " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"e", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{"0.206", ",", "PREC"}], "]"}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Planet", " ", "mass"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"m", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"1.652052996452", "*", 
+        RowBox[{"10", "^", 
+         RowBox[{"-", "7"}]}]}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"Orbital", " ", "Period"}], " ", "-", " ", 
+     RowBox[{"in", " ", "earth", " ", "days"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"T", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{"87.97", ",", "PREC"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "Planet", " ", "cycles", " ", "per", " ", "Julian", " ", "Century", " ", 
+     RowBox[{"(", 
+      RowBox[{"36524.3", " ", "days"}], ")"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"n", " ", "=", 
+     RowBox[{"SetPrecision", "[", " ", 
+      RowBox[{
+       RowBox[{"36524.3", "/", "T"}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "**", "**", "**", "**", "**", "**", "**", "**", " ", "Newtonian"}], " ", 
+     "Orbit", " ", "Quantities"}], " ", "*****************)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Latus", " ", "Rectum"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"alpha", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"a", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          RowBox[{"e", "^", "2"}]}], ")"}]}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Specific", " ", "Angular", " ", "Momentum"}], " ", "*)"}], "\n", 
+   
+   RowBox[{
+    RowBox[{"h", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"Sqrt", "[", 
+        RowBox[{"alpha", " ", "M", " ", 
+         RowBox[{"G", " ", "/", " ", 
+          RowBox[{"c", "^", "2"}]}]}], "]"}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", "  ", 
+    RowBox[{"Angular", " ", "Momentum"}], " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"l", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", " ", 
+      RowBox[{
+       RowBox[{"m", " ", "h"}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"non", "-", 
+     RowBox[{"Relativistic", " ", "Energy"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"E0", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"m", " ", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"M", " ", 
+           RowBox[{"G", "/", 
+            RowBox[{"c", "^", "2"}]}]}], ")"}], "^", "2"}], 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"e", "^", "2"}], "-", "1."}], ")"}], "/", 
+         RowBox[{"(", 
+          RowBox[{"2.", " ", 
+           RowBox[{"h", "^", "2"}]}], ")"}]}]}], ",", "PREC"}], "]"}]}], 
+    ";"}], "\n", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"Relativistic", " ", "Energy"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[DoubleStruckCapitalE]", "=", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"m", "+", "E0"}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"**", "**", "**", "**", "**", "**", "**", "**", " ", "Limit"}], 
+     " ", "Radius", " ", "of", " ", "Orbits"}], " ", "*****************)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rmin", "=", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"a", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", "e"}], ")"}]}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Rmax", "=", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"a", 
+        RowBox[{"(", 
+         RowBox[{"1", "+", "e"}], ")"}]}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"wmin", "=", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"1", "/", "Rmax"}], ",", "PREC"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"wmax", "=", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"1", "/", "Rmin"}], ",", "PREC"}], "]"}]}], ";"}], "\n", "\n", 
+   
+   RowBox[{
+    RowBox[{"umin", "=", 
+     RowBox[{"rs", "/", "Rmax"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"umax", "=", 
+     RowBox[{"rs", "/", "Rmin"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "**", "**", "**", "**", "**", "**", "**", "**", " ", "Numerical"}], " ", 
+     "Solve", " ", "for", " ", "General", " ", "Relativity"}], " ", 
+    "*****************)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"EQSRG", " ", "=", 
+     RowBox[{"{", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"W", " ", "''"}], "[", "phi", "]"}], "+", 
+         RowBox[{"W", "[", "phi", "]"}]}], "\[Equal]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"M", " ", "G"}], ")"}], "/", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"c", " ", "h"}], ")"}], "^", "2"}]}], "+", 
+         RowBox[{"3", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"M", " ", "G"}], ")"}], "/", 
+           RowBox[{"c", " ", "^", "2"}]}], " ", 
+          SuperscriptBox[
+           RowBox[{"W", "[", "phi", "]"}], "2"]}]}]}], ",", 
+       RowBox[{
+        RowBox[{"W", "[", "0.00", "]"}], "\[Equal]", 
+        RowBox[{"QuantityMagnitude", "[", 
+         RowBox[{"1", "/", 
+          RowBox[{"(", 
+           RowBox[{"a", 
+            RowBox[{"(", 
+             RowBox[{"1", "-", "e"}], ")"}]}], ")"}]}], "]"}]}], ",", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"W", "'"}], "[", "0", "]"}], "\[Equal]", "0"}]}], "}"}]}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"wrg", "=", 
+     RowBox[{"NDSolveValue", "[", 
+      RowBox[{"EQSRG", ",", "W", ",", 
+       RowBox[{"{", 
+        RowBox[{"phi", ",", "0.00", ",", " ", 
+         RowBox[{"4", "Pi"}]}], "}"}], ",", 
+       RowBox[{"WorkingPrecision", "\[Rule]", 
+        RowBox[{"PREC", "-", "1"}]}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DeltaPhiNumRG", " ", "=", " ", 
+     RowBox[{"SetPrecision", "[", 
+      RowBox[{
+       RowBox[{"n", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"FindArgMax", "[", 
+            RowBox[{
+             RowBox[{"wrg", "[", "phi", "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"phi", ",", 
+               RowBox[{"2.", "Pi"}]}], "}"}]}], "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "-", 
+          RowBox[{"SetPrecision", "[", 
+           RowBox[{
+            RowBox[{"2.", "Pi"}], ",", "PREC"}], "]"}]}], ")"}]}], ",", 
+       "PREC"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Print", "[", "\"\<Mercury Precession - General Relativity \>\"", "]"}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{"Print", "[", 
+    RowBox[{"\"\<Numerical Predict: \>\"", ",", 
+     RowBox[{"UnitConvert", "[", 
+      RowBox[{
+       RowBox[{"Quantity", "[", 
+        RowBox[{"DeltaPhiNumRG", ",", "\"\<Radians\>\""}], "]"}], ",", 
+       "\"\<ArcSeconds\>\""}], "]"}]}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{"Print", "[", 
+    RowBox[{"\"\<Einstein Formula: \>\"", ",", 
+     RowBox[{"UnitConvert", "[", 
+      RowBox[{
+       RowBox[{"Quantity", "[", 
+        RowBox[{
+         RowBox[{"SetPrecision", "[", 
+          RowBox[{
+           RowBox[{"6", "\[Pi]", " ", "n", " ", "M", " ", 
+            RowBox[{"G", " ", "/", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"c", "^", "2"}], "a", " ", 
+               RowBox[{"(", 
+                RowBox[{"1", "-", 
+                 RowBox[{"e", "^", "2"}]}], ")"}]}], ")"}]}]}], ",", "PREC"}],
+           "]"}], ",", "\"\<Radians\>\""}], "]"}], ",", 
+       "\"\<ArcSeconds\>\""}], "]"}]}], "]"}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.778011863653145*^9, 3.7780118897527742`*^9}, {
+   3.778011934585479*^9, 3.778011966963316*^9}, {3.778012202253983*^9, 
+   3.778012292716381*^9}, {3.778012325276207*^9, 3.778012638207797*^9}, {
+   3.7780128228209867`*^9, 3.778012850781321*^9}, {3.778012888363736*^9, 
+   3.778013354363235*^9}, {3.778013409946993*^9, 3.7780134681733313`*^9}, {
+   3.778013511690605*^9, 3.778013585858626*^9}, {3.778013623013425*^9, 
+   3.778013834600975*^9}, {3.778013905580367*^9, 3.778014027378083*^9}, {
+   3.778014065352556*^9, 3.7780142146930113`*^9}, {3.778014301506966*^9, 
+   3.778014322821706*^9}, {3.7780143950931053`*^9, 3.7780144311631107`*^9}, {
+   3.778014467435359*^9, 3.778014498314666*^9}, {3.778014547225882*^9, 
+   3.778014685617271*^9}, {3.7780147313476343`*^9, 3.778014783249604*^9}, {
+   3.778015190442617*^9, 3.778015191027203*^9}, {3.7780152537503138`*^9, 
+   3.7780152558936157`*^9}, {3.778015502329762*^9, 3.778015509144493*^9}, {
+   3.778015549778103*^9, 3.77801572908095*^9}, {3.778016021569584*^9, 
+   3.7780160357957287`*^9}, {3.7780161291275997`*^9, 3.778016137684247*^9}, {
+   3.7780162081141376`*^9, 3.778016233440151*^9}, {3.778016269763245*^9, 
+   3.778016270001671*^9}, {3.778016310423497*^9, 3.77801631854184*^9}, {
+   3.778016441528941*^9, 3.778016443903323*^9}, {3.7780164985266943`*^9, 
+   3.778016559258184*^9}, {3.778016759925036*^9, 3.778016763752459*^9}, {
+   3.778016794526162*^9, 3.778016835377524*^9}, {3.778017191629039*^9, 
+   3.7780171958683662`*^9}, {3.7780177417789993`*^9, 3.778017783953044*^9}, {
+   3.778021459335924*^9, 3.7780214910135098`*^9}, {3.782590728738761*^9, 
+   3.782590740135921*^9}, 3.782590796217615*^9, {3.782590851320487*^9, 
+   3.782590953374103*^9}, {3.787924188071899*^9, 3.7879242001530447`*^9}, {
+   3.801544696438204*^9, 3.801544717604615*^9}, {3.801544757067574*^9, 
+   3.8015448710318737`*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"4c385e51-b9ce-4b4c-ba77-19265710169f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Mercury Precession - General Relativity \"\>"], "Print",
+ CellChangeTimes->{{3.801544702502675*^9, 3.801544718214464*^9}, {
+   3.80154475811106*^9, 3.801544818495026*^9}, 3.801544849905966*^9, 
+   3.801544881492817*^9, 3.801544934584244*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"ff211d7d-1355-41e6-9330-b27aafbad4dc"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Numerical Predict: \"\>", "\[InvisibleSpace]", 
+   TemplateBox[{
+    "42.9962785420966537282372055796141600071916896972443815496270071457697821\
+8913533`60.",RowBox[{"\[InvisibleSpace]", "\"\\\"\""}],"arc seconds",
+     "\"ArcSeconds\""},
+    "QuantityPostfix"]}],
+  SequenceForm["Numerical Predict: ", 
+   Quantity[
+   42.996278542096653728237205579614160007191689697244381549627007145769782189\
+13533`60., "ArcSeconds"]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.801544702502675*^9, 3.801544718214464*^9}, {
+   3.80154475811106*^9, 3.801544818495026*^9}, 3.801544849905966*^9, 
+   3.801544881492817*^9, 3.801544934607872*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"cc6d2cb7-866c-4884-b777-6a54eaa79e3f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Einstein Formula: \"\>", "\[InvisibleSpace]", 
+   TemplateBox[{
+    "42.9962698005939091372060028347543418185321798308565182803730173945885832\
+7164031`60.",RowBox[{"\[InvisibleSpace]", "\"\\\"\""}],"arc seconds",
+     "\"ArcSeconds\""},
+    "QuantityPostfix"]}],
+  SequenceForm["Einstein Formula: ", 
+   Quantity[
+   42.996269800593909137206002834754341818532179830856518280373017394588583271\
+64031`60., "ArcSeconds"]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.801544702502675*^9, 3.801544718214464*^9}, {
+   3.80154475811106*^9, 3.801544818495026*^9}, 3.801544849905966*^9, 
+   3.801544881492817*^9, 3.801544934610606*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"43c6ee65-7c6f-4ba3-9f9f-7241e3f22777"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{799, 834},
+WindowMargins->{{Automatic, 0}, {1, Automatic}},
+FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[StyleDefinitions -> "Core.nb"]], 
+   Cell[
+    StyleData["Title"], CellMargins -> {{12, 12}, {4, 36}}, 
+    CellGroupingRules -> {"TitleGrouping", 10}, 
+    ConversionRules :> {"TeX" -> {"\n\\title{", Automatic, "}"}}, 
+    PageBreakBelow -> False, DefaultNewCellStyle -> "Author", 
+    DefaultReturnCreatedCellStyle -> "Subtitle", TextAlignment -> Center, 
+    LineSpacing -> {1, 2}, MenuSortingValue -> 1100, FontFamily -> 
+    "TeX Gyre Pagella", FontSize -> 32, FontWeight -> "Plain", FontSlant -> 
+    "Plain", FontVariations -> {
+     "StrikeThrough" -> False, "Underline" -> False}, FontColor -> 
+    RGBColor[0.10196078431372549`, 0.30196078431372547`, 0.5019607843137255]], 
+   Cell[
+    StyleData["Date"], CellMargins -> {{120, 120}, {6, 6}}, CellGroupingRules -> 
+    "NormalGrouping", TextAlignment -> Center, ParagraphSpacing -> {0, 8}, 
+    MenuSortingValue -> 2060, FontFamily -> "Helvetica", FontSize -> 9, 
+    FontColor -> RGBColor[0, 0, 0.500008]], 
+   Cell[
+    StyleData["Author"], CellMargins -> {{54, 54}, {2, 24}}, 
+    CellGroupingRules -> {"SectionGrouping", 50}, 
+    ConversionRules :> {"TeX" -> {"", 
+        ExtractCellTaggingRules["AuthorData", "TeX", 1], ""}}, 
+    DefaultNewCellStyle -> "Section", DefaultReturnCreatedCellStyle -> 
+    "Institution", TextAlignment -> Center, ParagraphSpacing -> {0, 0}, 
+    MenuSortingValue -> 2000, FontSize -> 14, FontWeight -> "Bold"], 
+   Cell[
+    StyleData["Institution"], CellMargins -> {{54, 54}, {0, 0}}, 
+    CellGroupingRules -> "OutputGrouping", 
+    ConversionRules :> {"TeX" -> {"", Automatic, ""}}, DefaultNewCellStyle -> 
+    "Section", DefaultReturnCreatedCellStyle -> "Author", TextAlignment -> 
+    Center, CounterIncrements -> "Institution", MenuSortingValue -> 2010, 
+    FontColor -> RGBColor[0, 0, 0.500008]], 
+   Cell[
+    StyleData["AbstractSection"], CellMargins -> {{120, 120}, {3, 24}}, 
+    CellGroupingRules -> {"SectionGrouping", 50}, 
+    ConversionRules :> {"TeX" -> {"\n\n", Automatic, ""}}, 
+    TaggingRules :> {
+     "ExtraConversionRules" -> {
+       "General" -> {"NestingLevel" -> 90}, 
+        "TeX" -> {"CellGroupEnvironment" -> "abstract"}}}, CellFrameMargins -> 
+    3, TextAlignment -> Center, TextJustification -> 1, LineSpacing -> {1, 1},
+     MenuSortingValue -> 2020, FontFamily -> "TeX Gyre Pagella", FontSize -> 
+    16, FontWeight -> "Bold", FontSlant -> "Plain", 
+    FontVariations -> {"StrikeThrough" -> False, "Underline" -> False}, 
+    FontColor -> GrayLevel[0]], 
+   Cell[
+    StyleData["Code"], CellFrame -> {{2, 2}, {2, 2}}, 
+    CellMargins -> {{66, 10}, {5, 8}}, Background -> 
+    RGBColor[0.870588, 0.905882, 1]], 
+   Cell[
+    StyleData["Input"], CellMargins -> {{66, 10}, {5, 8}}, GroupOpenerColor -> 
+    GrayLevel[0.796078], 
+    StyleKeyMapping -> {
+     "=" -> "WolframAlphaShort", "*" -> "Item", ">" -> "ExternalLanguage"}, 
+    InitializationCell -> False, LegacyGraphicsCompatibility -> False, 
+    FontSize -> 13, Background -> 
+    RGBColor[0.9058823529411765, 0.9725490196078431, 1.]], 
+   Cell[
+    StyleData["Section"], CellFrame -> {{0, 0}, {0, 2}}, 
+    CellMargins -> {{12, 12}, {3, 24}}, 
+    CellGroupingRules -> {"SectionGrouping", 30}, 
+    ConversionRules :> {
+     "TeX" -> {"\n\\section{", Automatic, "}"}, 
+      "HTML" -> {"<h3 class=\"Section\">", Automatic, "</h3>"}}, 
+    TaggingRules :> {
+     "CounterSettings" -> {
+       "CounterTarget" -> "Cell", "XRefPrefix" -> "Section"}, 
+      "StyleSheetApplicability" -> False}, PageBreakBelow -> False, 
+    CellFrameColor -> 
+    RGBColor[0.10196078431372549`, 0.30196078431372547`, 0.5019607843137255], 
+    TextAlignment -> Left, TabSpacings -> 2.1, 
+    CounterIncrements -> {
+     "Section", "SectionHeader", "SubsectionHeader", "SubsubsectionHeader", 
+      "SubsubsubsectionHeader"}, MenuSortingValue -> 1200, MenuCommandKey -> 
+    "1", FontFamily -> "TeX Gyre Pagella", FontSize -> 20, FontWeight -> 
+    "Bold", FontSlant -> "Plain", 
+    FontVariations -> {"StrikeThrough" -> False, "Underline" -> False}, 
+    FontColor -> 
+    RGBColor[0.10196078431372549`, 0.30196078431372547`, 0.5019607843137255]], 
+   Cell[
+    StyleData["Subsection"], CellDingbat -> None, 
+    CellMargins -> {{12, 12}, {3, 12}}, 
+    CellElementSpacings -> {"ClosedGroupTopMargin" -> 12}, 
+    CellGroupingRules -> {"SectionGrouping", 40}, 
+    ConversionRules :> {
+     "TeX" -> {"\n\\subsection{", Automatic, "}"}, 
+      "HTML" -> {"<h4 class=\"Subsection\">", Automatic, "</h4>"}}, 
+    TaggingRules :> {
+     "CounterSettings" -> {
+       "CounterFormat" -> {"Section", ".", "Subsection"}, "CounterTarget" -> 
+        "Cell", "XRefPrefix" -> "Section"}, "StyleSheetApplicability" -> 
+      False}, PageBreakBelow -> False, AutoIndent -> True, TextAlignment -> 
+    Left, LineSpacing -> {1., 1., 2.}, TabSpacings -> 2., 
+    CounterIncrements -> {
+     "Subsection", "SubsectionHeader", "SubsubsectionHeader", 
+      "SubsubsubsectionHeader"}, MenuSortingValue -> 1250, MenuCommandKey -> 
+    "2", FontFamily -> "TeX Gyre Pagella", FontSize -> 18, FontWeight -> 
+    "Bold", FontSlant -> "Plain", 
+    FontVariations -> {"StrikeThrough" -> False, "Underline" -> False}, 
+    FontColor -> GrayLevel[0]], 
+   Cell[
+    StyleData["Subsubsection"], CellDingbat -> None, 
+    CellMargins -> {{12, 12}, {3, 6}}, 
+    CellElementSpacings -> {"ClosedGroupTopMargin" -> 12}, 
+    CellGroupingRules -> {"SectionGrouping", 50}, 
+    ConversionRules :> {
+     "TeX" -> {"\n\\subsubsection{", Automatic, "}"}, 
+      "HTML" -> {"<h5 class=\"Subsubsection\">", Automatic, "</h5>"}}, 
+    TaggingRules :> {
+     "CounterSettings" -> {
+       "CounterFormat" -> {
+         "Section", ".", "Subsection", ".", "Subsubsection"}, "CounterTarget" -> 
+        "Cell", "XRefPrefix" -> "Section"}, "StyleSheetApplicability" -> 
+      False}, PageBreakBelow -> False, TextAlignment -> Left, 
+    CounterIncrements -> {
+     "Subsubsection", "SubsubsectionHeader", "SubsubsubsectionHeader"}, 
+    MenuSortingValue -> 1300, MenuCommandKey -> "3", FontFamily -> 
+    "TeX Gyre Pagella", FontSize -> 16, FontWeight -> "Bold", FontSlant -> 
+    "Plain", FontVariations -> {
+     "StrikeThrough" -> False, "Underline" -> False}, FontColor -> 
+    GrayLevel[0.333333], CounterBoxOptions -> {CounterFunction :> Identity}], 
+   
+   Cell[
+    StyleData["Subsubsubsection"], CellDingbat -> None, 
+    CellMargins -> {{12, 12}, {3, 6}}, 
+    CellGroupingRules -> {"SectionGrouping", 60}, 
+    ConversionRules :> {
+     "TeX" -> {"\n\\subsubsubsection{", Automatic, "}"}, 
+      "HTML" -> {"<h6 class=\"Subsubsubsection\">", "</h6>"}}, 
+    CounterIncrements -> {"Subsubsubsection", "SubsubsubsectionHeader"}, 
+    MenuSortingValue -> 1350, MenuCommandKey -> "4", FontFamily -> 
+    "TeX Gyre Pagella", FontSize -> 16, FontWeight -> "Bold", FontSlant -> 
+    "Plain", FontVariations -> {
+     "StrikeThrough" -> False, "Underline" -> False}, FontColor -> 
+    GrayLevel[0.333333]], 
+   Cell[
+    StyleData["Text"], CellMargins -> {{12, 10}, {3, 5}}, 
+    ConversionRules :> {
+     "TeX" -> {{"", Automatic, ""}, {"\n\n", Automatic, ""}}}, TextAlignment -> 
+    Left, TextJustification -> 1, LineSpacing -> {1, 3}, 
+    ParagraphSpacing -> {0.5, 0.}, ParagraphIndent -> 30, CounterIncrements -> 
+    "Text", CounterAssignments -> {{"Item1Numbered", 0}}, MenuSortingValue -> 
+    1500, MenuCommandKey -> "7", FontFamily -> "TeX Gyre Pagella", FontSize -> 
+    16, FontWeight -> "Plain", FontSlant -> "Plain", 
+    FontVariations -> {"StrikeThrough" -> False, "Underline" -> False}], 
+   Cell[
+    StyleData["TextNoIndent"], CellMargins -> {{12, 10}, {3, 5}}, 
+    ConversionRules :> {
+     "TeX" -> {{"\\noindent ", Automatic, ""}, {
+        "\n\n\\noindent ", Automatic, ""}}}, 
+    TaggingRules :> {"CounterSettings" -> {"CounterTarget" -> "CellGroup"}}, 
+    TextAlignment -> Left, TextJustification -> 1, LineSpacing -> {1, 3}, 
+    CounterIncrements -> "Text", CounterAssignments -> {{"Item1Numbered", 0}},
+     StyleMenuListing -> None], 
+   Cell[
+    StyleData["Equation"], CellMargins -> {{36, 6}, {7, 7}}, 
+    ConversionRules :> {
+     "HTML" -> {{"", ""}, {"<p class=\"Equation\">", "</p>"}}}, 
+    CellHorizontalScrolling -> True, CellFrameLabels -> {{None, 
+       Cell["", "EquationNumber"]}, {None, None}}, DefaultFormatType -> 
+    TraditionalForm, InputAutoReplacements -> {}, TextAlignment -> Center, 
+    CounterIncrements -> "Equation", MenuSortingValue -> 1400, MenuCommandKey -> 
+    "5", FontFamily -> "Utopia", FontSize -> 16, FontWeight -> "Plain", 
+    FontSlant -> "Plain", 
+    FontVariations -> {"StrikeThrough" -> False, "Underline" -> False}, 
+    ButtonBoxOptions -> {Appearance -> {Automatic, None}}], 
+   Cell[
+    StyleData["EquationNumbered", StyleDefinitions -> StyleData["Equation"]], 
+    ConversionRules :> {
+     "HTML" -> {{"", ""}, {
+        "<table class='EquationNumbered'><tr><td>", Automatic, 
+         IncludeCount[
+         "</td><td class='EquationNumberedLabel'>(`1`)</td></tr></table>", 
+          "EquationNumbered"]}}}, 
+    TaggingRules :> {
+     "CounterSettings" -> {
+       "CounterFormat" -> {"EquationNumbered"}, "CounterTarget" -> "Cell", 
+        "XRefPrefix" -> "Equation"}}, CellHorizontalScrolling -> True, 
+    CellFrameLabels -> {{None, 
+       Cell[
+        TextData[{"(", 
+          CounterBox["EquationNumbered"], ")"}]]}, {None, None}}, 
+    ShowCellTags -> True, CounterIncrements -> "EquationNumbered", 
+    MenuSortingValue -> 1450, MenuCommandKey -> "6", FontFamily -> "Utopia", 
+    FontSize -> 16, FontWeight -> "Plain", FontSlant -> "Plain", 
+    FontVariations -> {"StrikeThrough" -> False, "Underline" -> False}], 
+   Cell[
+    StyleData["Item1"], CellDingbat -> "\[DiamondSuit]", 
+    CellMargins -> {{42, 12}, {4, 4}}, 
+    CellGroupingRules -> {"GroupTogetherNestedGrouping", 15000}, 
+    ConversionRules :> {{"TeX" -> {"\n\\item ", ""}}, {
+      "HTML" -> {"<li>", "</li>"}}}, 
+    TaggingRules :> {
+     "ExtraConversionRules" -> {
+       "General" -> {"NestingLevel" -> 30}, 
+        "TeX" -> {"CellGroupEnvironment" -> "itemize"}, 
+        "HTML" -> {"CellGroupEnvironment" -> "ul"}}}, 
+    CellFrameLabels -> {{None, None}, {None, None}}, CounterIncrements -> 
+    "Item1", MenuSortingValue -> 1710, FontFamily -> "Utopia", FontSize -> 16,
+     FontWeight -> "Bold", FontSlant -> "Plain", 
+    FontVariations -> {"StrikeThrough" -> False, "Underline" -> False}, 
+    FontColor -> 
+    RGBColor[0.08235294117647059, 0.30196078431372547`, 0.4980392156862745]], 
+   
+   Cell[
+    StyleData["Item2"], CellDingbat -> Cell["\[FilledSmallCircle]"], 
+    CellMargins -> {{66, 12}, {1, 2}}, 
+    CellGroupingRules -> {"GroupTogetherNestedGrouping", 15100}, 
+    ConversionRules :> {{"TeX" -> {"\n\\item ", ""}}, {
+      "HTML" -> {"<li>", "</li>"}}}, 
+    TaggingRules :> {
+     "ExtraConversionRules" -> {
+       "General" -> {"NestingLevel" -> 40}, 
+        "TeX" -> {"CellGroupEnvironment" -> "itemize"}, 
+        "HTML" -> {"CellGroupEnvironment" -> "ul"}}}, 
+    CellFrameLabels -> {{None, None}, {None, None}}, CounterIncrements -> 
+    "Item2", MenuSortingValue -> 1720], 
+   Cell[
+    StyleData["Item3"], CellDingbat -> Cell["\[FilledSmallCircle]"], 
+    CellMargins -> {{90, 12}, {1, 2}}, 
+    CellGroupingRules -> {"GroupTogetherNestedGrouping", 15200}, 
+    ConversionRules :> {{"TeX" -> {"\n\\item ", ""}}, {
+      "HTML" -> {"<li>", "</li>"}}}, 
+    TaggingRules :> {
+     "ExtraConversionRules" -> {
+       "General" -> {"NestingLevel" -> 50}, 
+        "TeX" -> {"CellGroupEnvironment" -> "itemize"}, 
+        "HTML" -> {"CellGroupEnvironment" -> "ul"}}}, CellFrameMargins -> 0, 
+    CellFrameLabels -> {{None, None}, {None, None}}, CounterIncrements -> 
+    "Item3", MenuSortingValue -> 1730], 
+   Cell[
+    CellGroupData[{
+      Cell["Figure", "Subsubsection"], 
+      Cell[
+       CellGroupData[{
+         Cell[
+          StyleData["Figure"], Editable -> False, 
+          CellMargins -> {{12, 4}, {7, 7}}, CellGroupingRules -> 
+          "InputGrouping", PageBreakWithin -> False, ShowCellLabel -> False, 
+          DefaultFormatType -> DefaultOutputFormatType, TextAlignment -> 
+          Center, LanguageCategory -> None, CounterIncrements -> "Figure", 
+          ImageMargins -> {{43, Inherited}, {Inherited, 0}}, FontFamily -> 
+          Dynamic[
+            CurrentValue[{StyleHints, "CodeFont"}]], FontSize -> 10], 
+         Cell[
+          StyleData["Figure", "Printout"], CellMargins -> {{2, 2}, {6, 6}}, 
+          TextAlignment -> Center, Magnification -> 0.8]}, Open]], 
+      Cell[
+       CellGroupData[{
+         Cell[
+          StyleData["FigureCaption"], 
+          CellMargins -> {{54, 54}, {Inherited, Inherited}}, 
+          CellGroupingRules -> "OutputGrouping", PageBreakAbove -> False, 
+          TextAlignment -> Center, TextJustification -> 1, CounterIncrements -> 
+          "FigureCaption", CounterAssignments -> {{"Nil", 0}}, FontSize -> 
+          10], 
+         Cell[
+          StyleData["FigureCaption", "Printout"], 
+          CellMargins -> {{48, 48}, {6, 2}}, TextAlignment -> Center, 
+          TextJustification -> 1]}, Closed]], 
+      Cell[
+       StyleData["FigureCaptionLabel"], Editable -> False, 
+       CellGroupingRules -> {"GraphicsGrouping", 0}]}, Open]]}, Visible -> 
+  False, FrontEndVersion -> "11.3 for Linux x86 (64-bit) (March 6, 2018)", 
+  StyleDefinitions -> "PrivateStylesheetFormatting.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 517, 9, 136, "Title",ExpressionUUID->"7d94a150-ac58-4052-b5d1-2db496d22871"],
+Cell[CellGroupData[{
+Cell[1122, 35, 412, 7, 67, "Section",ExpressionUUID->"b3ff6c80-c0e3-4248-9978-08da3a200ba5"],
+Cell[CellGroupData[{
+Cell[1559, 46, 14598, 377, 1928, "Input",ExpressionUUID->"4c385e51-b9ce-4b4c-ba77-19265710169f"],
+Cell[CellGroupData[{
+Cell[16182, 427, 363, 6, 25, "Print",ExpressionUUID->"ff211d7d-1355-41e6-9330-b27aafbad4dc"],
+Cell[16548, 435, 791, 18, 27, "Print",ExpressionUUID->"cc6d2cb7-866c-4884-b777-6a54eaa79e3f"],
+Cell[17342, 455, 789, 18, 27, "Print",ExpressionUUID->"43c6ee65-7c6f-4ba3-9f9f-7241e3f22777"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
